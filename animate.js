@@ -55,23 +55,33 @@ $(document).ready(function() {
 	};
 	
 	/*
-	Where will we spawn the enemies?
+	Group the enemies
 	*/
 	var enemies = new Array();
+	
+	/*
+	Spawn a new batch of enemies every 3 seconds
+	*/
+	
+	function enemySpawn() {
 	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
 	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
 	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
 	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
 	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
 	
+	setTimeout(enemySpawn, 3000);
+	}
+
+	
 	/*
-	Perform the animation
+	Animate the player movement
 	*/
 	function animate() {
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(x, y, 50, 50);
+		ctx.fillRect(x, y, 30, 30);
 		
 
 		
@@ -79,7 +89,7 @@ $(document).ready(function() {
 	}
 	
 	/*
-	Spawn the enemies once per second
+	Animate the enemies
 	*/
 	
 	function enemyAnimate() {
@@ -94,6 +104,10 @@ $(document).ready(function() {
 			setTimeout(enemyAnimate, 33);
 	}
 	
+	/*
+	Actually run all of the animation functions
+	*/
 	animate();
 	enemyAnimate();
+	enemySpawn();
 });
