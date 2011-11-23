@@ -41,10 +41,28 @@ $(document).ready(function() {
 	}
 	
 	/*
-	Define where the square is by default
+	Define where the player is by default
 	*/
 	var x = 0;
 	var y = 450;
+	
+	/*
+	Create a template for enemies
+	*/
+	var Enemies = function(x, y) {
+	this.x = x;
+	this.y = y;
+	};
+	
+	/*
+	Where will we spawn the enemies?
+	*/
+	var enemies = new Array();
+	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
+	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
+	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
+	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
+	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
 	
 	/*
 	Perform the animation
@@ -55,8 +73,27 @@ $(document).ready(function() {
 		ctx.fillStyle = "rgb(0, 0, 0)";
 		ctx.fillRect(x, y, 50, 50);
 		
+
+		
 		setTimeout(animate, 33);
 	}
 	
+	/*
+	Spawn the enemies once per second
+	*/
+	
+	function enemyAnimate() {
+	
+				var enemiesLength = enemies.length;
+				for (var i = 0; i < enemiesLength; i++) {
+				var tmpEnemies = enemies[i];
+				tmpEnemies.y++;
+				ctx.fillRect(tmpEnemies.x, tmpEnemies.y, 30, 30);
+				};
+				
+			setTimeout(enemyAnimate, 33);
+	}
+	
 	animate();
+	enemyAnimate();
 });
