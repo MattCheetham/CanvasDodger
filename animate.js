@@ -132,6 +132,13 @@ $(document).ready(function() {
 		console.log("Collision");
 		};
 		
+		/*
+		* Clears the rectangle once it has left the screen
+		*/
+		if (tmpEnemies.y > 500){
+		ctx.clearRect(tmpEnemies.x, tmpEnemies.y, 30, 30)
+		};
+		
 		};
 		
 		/*
