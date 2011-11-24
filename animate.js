@@ -1,6 +1,13 @@
 // JavaScript Document
 $(document).ready(function() {
 	/*
+	* Global Variables
+	*/
+	var playAnimation = true;
+	var direction = 'none';
+	var score = 0;
+	
+	/*
 	* Define The Canvas Element
 	*/
 	var canvas = $("#canvas");
@@ -19,16 +26,10 @@ $(document).ready(function() {
 	var canvasHeight = canvas.height();
 	
 	/*
-	* Allow the animation
-	*/
-	var playAnimation = true;
-	
-	/*
 	* Define keys and the default direction
 	* W&D
 	*/
     var keys = [ [ 37, 65 ], [ 39, 68 ] ];
-    var direction = 'none';
     
     /*
     * Check if we have pressed a key or released it
@@ -115,7 +116,7 @@ $(document).ready(function() {
 		for (var i = 0; i < playerLength; i++){
 		var tmpPlayer = player[i];
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-		ctx.fillStyle = "rgb(0, 0, 0)";
+		ctx.fillStyle = "red";
 		ctx.fillRect(tmpPlayer.x, tmpPlayer.y, 30, 30);
 		};
 		
@@ -127,6 +128,7 @@ $(document).ready(function() {
 		for (var i = 0; i < enemiesLength; i++) {
 		var tmpEnemies = enemies[i];
 		tmpEnemies.y += 3;
+		ctx.fillStyle = "black";
 		ctx.fillRect(tmpEnemies.x, tmpEnemies.y, 30, 30);
 		
 		/*
@@ -164,9 +166,29 @@ $(document).ready(function() {
 			player[0].x += 8;
 			}
 		}
+
+		/*
+		* Show the score
+		*/
+		ctx.font = '20px san-serif';
+		ctx.textBaseline = 'bottom';
+		ctx.fillText(score, 270, 485);
 		
 		if(playAnimation){
 		setTimeout(animate, 33);
+		}
+	}
+	
+		function countScore() {
+	
+		/*
+		* Count our score
+		*/
+		score += 1;
+		console.log(score);
+		
+		if(playAnimation){
+		setTimeout(countScore, 500);
 		}
 	}
 	
@@ -175,4 +197,5 @@ $(document).ready(function() {
 	*/
 	animate();
 	enemySpawn();
+	countScore();
 });
