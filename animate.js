@@ -127,9 +127,17 @@ $(document).ready(function() {
 		* Move the player
 		*/
 		if( direction == 'left'){
-		player[0].x -= 8;
+			if(player[0].x < 5){
+			player[0].x == 5;
+			} else {
+			player[0].x -= 8;
+			}
 		} else if( direction == 'right'){
-		player[0].x += 8;
+			if(player[0].x > 270){
+			player[0].x == 270;
+			} else {
+			player[0].x += 8;
+			}
 		}
 		
 		setTimeout(animate, 33);
