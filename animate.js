@@ -19,24 +19,42 @@ $(document).ready(function() {
 	var canvasHeight = canvas.height();
 	
 	/*
-	* Define keys
+	* Define keys and the default direction
 	* W&D
 	*/
     var keys = [ [ 37, 65 ], [ 39, 68 ] ];
+    var direction = 'none';
     
     /*
-    * Check if we have pressed a key
+    * Check if we have pressed a key or released it
     */
-    window.addEventListener('keydown',keyPress,true);
+    document.onkeydown = keyPress;
+	document.onkeyup = keyRelease;
 	
 	/*
-	* Work out which key we pressed and move the player in the right direction
+	* Check which key is pressed and define the player direction
 	*/
 	function keyPress(evt){
 		if( evt.which == keys[0][0] || evt.which == keys[0][1] ) {
-		player[0].x -= 10;
+		direction = 'left';
+		return direction;
 	}else if( evt.which == keys[1][0] || evt.which == keys[1][1] ) {
-		player[0].x += 10;
+		direction = 'right';
+		return direction;
+		}
+	}
+	
+	/*
+	* Check if a key is released and set no direction
+	*/
+	
+	function keyRelease(evt){
+		if( evt.which == keys[0][0] || evt.which == keys[0][1] ) {
+		direction = 'none';
+		return direction;
+	}else if( evt.which == keys[1][0] || evt.which == keys[1][1] ) {
+		direction = 'none';
+		return direction;
 		}
 	}
 	
@@ -94,29 +112,32 @@ $(document).ready(function() {
 		ctx.fillRect(tmpPlayer.x, tmpPlayer.y, 30, 30);
 		};
 		
+		/*
+		* Animate the enemies
+		*/
+		
+		var enemiesLength = enemies.length;
+		for (var i = 0; i < enemiesLength; i++) {
+		var tmpEnemies = enemies[i];
+		tmpEnemies.y += 3;
+		ctx.fillRect(tmpEnemies.x, tmpEnemies.y, 30, 30);
+		};
+		
+		/*
+		* Move the player
+		*/
+		if( direction == 'left'){
+		player[0].x -= 8;
+		} else if( direction == 'right'){
+		player[0].x += 8;
+		}
+		
 		setTimeout(animate, 33);
-	}
-	
-	/*
-	* Animate the enemies
-	*/
-	
-	function enemyAnimate() {
-	
-				var enemiesLength = enemies.length;
-				for (var i = 0; i < enemiesLength; i++) {
-				var tmpEnemies = enemies[i];
-				tmpEnemies.y += 3;
-				ctx.fillRect(tmpEnemies.x, tmpEnemies.y, 30, 30);
-				};
-				
-			setTimeout(enemyAnimate, 33);
 	}
 	
 	/*
 	* Actually run all of the animation functions
 	*/
 	animate();
-	enemyAnimate();
 	enemySpawn();
 });
