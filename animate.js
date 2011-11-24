@@ -20,7 +20,7 @@ $(document).ready(function() {
 	
 	/*
 	* Define keys
-	* WASD
+	* W&D
 	*/
     var keys = [ [ 37, 65 ], [ 39, 68 ] ];
     
@@ -49,6 +49,11 @@ $(document).ready(function() {
 	};
 	
 	/*
+	* Group the enemies
+	*/
+	var enemies = new Array();
+	
+	/*
 	* Create a player
 	*/
 	var Player = function(x ,y) {
@@ -59,11 +64,6 @@ $(document).ready(function() {
 	var player = new Array();
 	
 	player.push(new Player(0, 450, 30, 30));
-	
-	/*
-	* Group the enemies
-	*/
-	var enemies = new Array();
 	
 	
 	/*
@@ -106,7 +106,7 @@ $(document).ready(function() {
 				var enemiesLength = enemies.length;
 				for (var i = 0; i < enemiesLength; i++) {
 				var tmpEnemies = enemies[i];
-				tmpEnemies.y++;
+				tmpEnemies.y += 3;
 				ctx.fillRect(tmpEnemies.x, tmpEnemies.y, 30, 30);
 				};
 				
