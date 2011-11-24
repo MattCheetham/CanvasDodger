@@ -19,6 +19,11 @@ $(document).ready(function() {
 	var canvasHeight = canvas.height();
 	
 	/*
+	* Allow the animation
+	*/
+	var playAnimation = true;
+	
+	/*
 	* Define keys and the default direction
 	* W&D
 	*/
@@ -95,7 +100,9 @@ $(document).ready(function() {
 	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
 	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
 	
+	if(playAnimation){
 	setTimeout(enemySpawn, 3000);
+	}
 	}
 
 	
@@ -129,7 +136,7 @@ $(document).ready(function() {
 		!(player[0].x+30 < tmpEnemies.x) &&
 		!(tmpEnemies.y+30 < player[0].y) &&
 		!(player[0].y+30 < tmpEnemies.y)) { 
-		console.log("Collision");
+		playAnimation = false;
 		};
 		
 		/*
@@ -158,7 +165,9 @@ $(document).ready(function() {
 			}
 		}
 		
+		if(playAnimation){
 		setTimeout(animate, 33);
+		}
 	}
 	
 	/*
