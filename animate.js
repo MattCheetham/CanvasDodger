@@ -89,11 +89,11 @@ $(document).ready(function() {
 	*/
 	
 	function enemySpawn() {
-	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
-	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
-	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
-	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
-	enemies.push(new Enemies(Math.random()*300, 0, 30, 30));
+	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
+	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
+	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
+	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
+	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
 	
 	setTimeout(enemySpawn, 3000);
 	}
@@ -121,6 +121,17 @@ $(document).ready(function() {
 		var tmpEnemies = enemies[i];
 		tmpEnemies.y += 3;
 		ctx.fillRect(tmpEnemies.x, tmpEnemies.y, 30, 30);
+		
+		/*
+		* look for collisions
+		*/
+		if (!(tmpEnemies.x+30 < player[0].x) &&
+		!(player[0].x+30 < tmpEnemies.x) &&
+		!(tmpEnemies.y+30 < player[0].y) &&
+		!(player[0].y+30 < tmpEnemies.y)) { 
+		console.log("Collision");
+		};
+		
 		};
 		
 		/*
