@@ -6,6 +6,7 @@ $(document).ready(function() {
 	var playAnimation = true;
 	var direction = 'none';
 	var score = 0;
+	var enemySpeed = 1000;
 	
 	/*
 	* Define The Canvas Element
@@ -91,18 +92,20 @@ $(document).ready(function() {
 	
 	
 	/*
-	* Spawn a new batch of enemies every 3 seconds
+	* Spawn new batches of enemies and increase frequency
 	*/
 	
 	function enemySpawn() {
 	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
-	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
-	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
-	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
-	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
+	if(enemySpeed > 600){
+	enemySpeed -= 10;
+	} else {
+	enemySpeed == 600;
+	}
+	console.log(enemySpeed);
 	
 	if(playAnimation){
-	setTimeout(enemySpawn, 3000);
+	setTimeout(enemySpawn, enemySpeed);
 	}
 	}
 
@@ -185,7 +188,6 @@ $(document).ready(function() {
 		* Count our score
 		*/
 		score += 1;
-		console.log(score);
 		
 		if(playAnimation){
 		setTimeout(countScore, 500);
