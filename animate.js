@@ -7,6 +7,8 @@ $(document).ready(function() {
 	var direction = 'none';
 	var score = 0;
 	var enemySpeed = 1000;
+	var level = 0;
+	var velocity = 3;
 	
 	/*
 	* Define The Canvas Element
@@ -90,19 +92,19 @@ $(document).ready(function() {
 	
 	player.push(new Player(0, 450, 30, 30));
 	
-	
 	/*
 	* Spawn new batches of enemies and increase frequency
 	*/
 	
 	function enemySpawn() {
 	enemies.push(new Enemies(Math.round(Math.random()*300), 0, 30, 30));
-	if(enemySpeed > 600){
+	if(enemySpeed > 600 && level == 1){
 	enemySpeed -= 10;
-	} else {
-	enemySpeed == 600;
+	console.log(enemySpeed)
+	} else if(enemySpeed > 300 && level == 2 && velocity > 10){
+	enemySpeed -= 5;
+	console.log(enemySpeed)
 	}
-	console.log(enemySpeed);
 	
 	if(playAnimation){
 	setTimeout(enemySpawn, enemySpeed);
@@ -130,7 +132,11 @@ $(document).ready(function() {
 		var enemiesLength = enemies.length;
 		for (var i = 0; i < enemiesLength; i++) {
 		var tmpEnemies = enemies[i];
+		if( level == 1){
 		tmpEnemies.y += 3;
+		} else if( level == 2){
+		tmpEnemies.y += velocity;
+		}
 		ctx.fillStyle = "black";
 		ctx.fillRect(tmpEnemies.x, tmpEnemies.y, 30, 30);
 		
@@ -185,7 +191,7 @@ $(document).ready(function() {
 		function countScore() {
 	
 		/*
-		* Count our score
+		* Count our score and change level if needed
 		*/
 		score += 1;
 		
@@ -194,10 +200,29 @@ $(document).ready(function() {
 		}
 	}
 	
+		function levelCheck(){
+				
+		if(score < 75){
+		level = 1;
+		} else if(score < 130){
+		level = 2;
+		}
+		
+		if( level == 2 && velocity < 10 ){
+		velocity += 0.01;
+		}
+		
+		if(playAnimation){
+		setTimeout(levelCheck, 33);
+		}
+		
+		}
+	
 	/*
 	* Actually run all of the animation functions
 	*/
 	animate();
 	enemySpawn();
 	countScore();
+	levelCheck();
 });
