@@ -90,7 +90,7 @@ $(document).ready(function() {
 	
 	var player = new Array();
 	
-	player.push(new Player(0, 450, 30, 30));
+	player.push(new Player(135, 450, 30, 30));
 	
 	/*
 	* Spawn new batches of enemies and increase frequency
@@ -239,6 +239,29 @@ $(document).ready(function() {
 		ctx.lineTo(301,500);
 		ctx.lineTo(301,0);
 		ctx.fill();
+		
+		ctx.beginPath();
+		ctx.moveTo(305, 40);
+		ctx.lineTo(445, 40);
+		ctx.lineTo(445, 65);
+		ctx.lineTo(305, 65);
+		ctx.lineTo(305, 40);
+		ctx.moveTo(305, 70);
+		ctx.lineTo(445, 70);
+		ctx.lineTo(445, 95);
+		ctx.lineTo(305, 95);
+		ctx.lineTo(305, 70);
+		ctx.moveTo(305, 100);
+		ctx.lineTo(445, 100);
+		ctx.lineTo(445, 125);
+		ctx.lineTo(305, 125);
+		ctx.lineTo(305, 100);
+		ctx.closePath();
+		ctx.stroke();
+		
+		ctx.font = 'bold 30px Calibri'
+		ctx.textBaseline = 'bottom';
+		ctx.fillText("Powerups", 315, 35);
 		
 		ctx.font = '40px san-serif';
 		ctx.textBaseline = 'bottom';
