@@ -255,8 +255,10 @@ $(document).ready(function() {
 		ctx.textBaseline = 'bottom';
 		if(score < 10){
 		ctx.fillText(score, 370, 490);
-		} else if(score <100){
+		} else if(score < 100){
 		ctx.fillText(score, 365, 490);
+		} else {
+		ctx.fillText(score, 360, 490);
 		}
 		
 		ctx.clearRect(325, 395, 100, 30);
