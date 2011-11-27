@@ -2,7 +2,14 @@ CANVAS DODGER
 
 The aim of the game is to avoid the falling blocks for as long as possible
 
+Collect the power ups to help you succeed further
+
 KEYS:
 
-W or Left arrow - Left
+A or Left arrow - Left
 D or Right arrow - Right
+
+//NOT YET IMPLEMENTED\\
+W or Up arrow - Toggle up through power ups
+S or Down arrow - Toggle down through power ups
+Space bar - Use power up
