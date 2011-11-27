@@ -115,7 +115,26 @@ $(document).ready(function() {
 		setTimeout(enemySpawn, enemySpeed);
 	}
 	}
-
+	
+	/*
+	* Spawn some power ups at random
+	*/
+	
+	var Powerups = function(x, y) {
+		this.x = x;
+		this.y = y;
+	};
+	var powerups = new Array();
+	
+	function powerSpawn() {
+		powerups.push(new Powerups(Math.round(Math.random()*270), 0, 30, 30));
+		
+		if(playAnimation){
+		setTimeout(powerSpawn, Math.round(Math.random()*(30000-5000)+5000));
+	}
+	}
+	
+	
 	
 	/*
 	* Animate the player movement
@@ -163,9 +182,52 @@ $(document).ready(function() {
 		*/
 		if (tmpEnemies.y > 500){
 			ctx.clearRect(tmpEnemies.x, tmpEnemies.y, 30, 30)
+		/*
+		* THIS IS THE NEW METHOD I WANT TO USE BUT IT CAUSES FLASHING
+		*/
+		/*
+					for(var i=0; i<enemies.length; i++) {
+			if (enemies[i] == tmpEnemies){
+				enemies.splice(enemies.indexOf(enemies[i]), 1);
+					}
+				}
+		*/
 		};
 		
 		};
+		
+				
+		/*
+		* Animate the power ups
+		*/
+		var powerupsLength = powerups.length;
+		for (var i = 0; i < powerupsLength; i++) {
+			var tmpPowerups = powerups[i];
+				if( level == 1){
+					tmpPowerups.y += 3;
+				} else if( level == 2){
+					tmpPowerups.y += velocity;
+				} else {
+					tmpPowerups.y += velocity;
+		}
+		ctx.fillStyle = "blue";
+		ctx.fillRect(tmpPowerups.x, tmpPowerups.y, 30, 30);
+		
+		/*
+		* Check for power up collision
+		*/
+		if (!(tmpPowerups.x+30 < player[0].x) &&
+			!(player[0].x+30 < tmpPowerups.x) &&
+			!(tmpPowerups.y+30 < player[0].y) &&
+			!(player[0].y+30 < tmpPowerups.y)) { 
+			
+		for(var i=0; i<powerups.length; i++) {
+			if (powerups[i] == tmpPowerups){
+				powerups.splice(powerups.indexOf(powerups[i]), 1);
+					}
+				}
+			}
+		}
 		
 		/*
 		* Move the player
@@ -278,10 +340,13 @@ $(document).ready(function() {
 		ctx.font = '25px san-serif';
 		ctx.textBaseline = 'bottom';
 		if(score < 10){
+		ctx.fillStyle = "black";
 		ctx.fillText(score, 370, 490);
 		} else if(score < 100){
+		ctx.fillStyle = "black";
 		ctx.fillText(score, 365, 490);
 		} else {
+		ctx.fillStyle = "black";
 		ctx.fillText(score, 360, 490);
 		}
 		
@@ -312,4 +377,5 @@ $(document).ready(function() {
 	levelCheck();
 	drawBoard();
 	showScore();
+	powerSpawn();
 });
