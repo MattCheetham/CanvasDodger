@@ -4,6 +4,7 @@ $(document).ready(function() {
 	* Global Variables
 	*/
 	var playAnimation = true;
+	var pauseScore = false;
 	var direction = 'none';
 	var score = 0;
 	var enemySpeed = 1000;
@@ -261,7 +262,7 @@ $(document).ready(function() {
 		
 		ctx.font = 'bold 30px Calibri'
 		ctx.textBaseline = 'bottom';
-		ctx.fillText("Powerups", 315, 35);
+		ctx.fillText("Powerups", 312, 35);
 		
 		ctx.font = '40px san-serif';
 		ctx.textBaseline = 'bottom';
@@ -284,14 +285,24 @@ $(document).ready(function() {
 		ctx.fillText(score, 360, 490);
 		}
 		
-		ctx.clearRect(325, 395, 100, 30);
-		ctx.fillText(level, 370, 420);
+		var bonusScores = [ 71, 75, 77, 79, 200, 202, 204, 206, 300, 302, 304, 306 ];
+
+		for( i = 0; i < bonusScores.length; i++ ) {
+    			if( ( level == 2 || level == 3 ) && ( score == bonusScores[i] ) ) {
+       				ctx.clearRect(325, 395, 100, 30);
+					ctx.font = 'bold 25px san-serif';
+					ctx.fillStyle = "red";
+					ctx.fillText(level, 370, 420);
+		} else {
+					ctx.clearRect(325, 395, 100, 30);
+					ctx.fillText(level, 370, 420);
+			}
+		}
 		
-		if(playAnimation){
+		if(playAnimation == true && pauseScore == false){
 			setTimeout(showScore, 33);
 		}
 	}
-	
 	/*
 	* Actually run all of the animation functions
 	*/
