@@ -12,8 +12,9 @@ $(document).ready(function() {
 	var velocity = 3;
 	var powerup1 = false;
 	var powerup2 = false;
-	var powerup3 = false;
+	var powerup3 = true;
 	var selectedPowerup = 1;
+	var P3Anim = false;
 	
 	/*
 	* Define The Canvas Element
@@ -32,6 +33,17 @@ $(document).ready(function() {
 	*/
 	var canvasWidth = canvas.width();
 	var canvasHeight = canvas.height();
+	
+	/*
+	* Define arrays for powerups
+	*/
+	var Wipeout = function(x, y) {
+		this.x = x;
+		this.y = y;
+	};
+		
+		var wipeout = new Array();
+		
 	
 	/*
 	* Define keys and the default direction
@@ -77,6 +89,11 @@ $(document).ready(function() {
 		} else if(powerup3 == true && selectedPowerup == 3)
 		{
 		powerup3 = false;
+		wipeout.push(new Wipeout(0, 450, 300, 5));
+		if(P3Anim == false){
+		startWipeout();
+		P3Anim = true;
+		}
 		}
 
 		}
@@ -204,6 +221,17 @@ $(document).ready(function() {
 		playAnimation = false;
 		};
 		
+		if (P3Anim == true && wipeout.length > 0){
+		if (tmpEnemies.y+30 > wipeout[0].y-5){ 
+			
+			for(var i=0; i<enemies.length; i++) {
+			if (enemies[i] == tmpEnemies){
+				enemies.splice(enemies.indexOf(enemies[i]), 1);
+					}
+				}
+		};
+		}
+		
 		/*
 		* Clears the rectangle once it has left the screen
 		*/
@@ -321,6 +349,38 @@ $(document).ready(function() {
 		}
 		
 		}
+		
+
+	/*
+	* Animate the wipeout
+	*/
+	
+	function startWipeout(){
+	
+		if(wipeout.length < 1){
+		}else{
+		
+		var wipeoutLength = wipeout.length;
+		for (var i = 0; i < wipeoutLength; i++) {
+			var tmpWipeout = wipeout[i];
+			if(tmpWipeout.y < 0 || tmpWipeout.y == 350){
+				wipeout.splice(wipeout.indexOf(powerups[i]), 1);
+				P3Anim = false;
+			
+			} else {
+					tmpWipeout.y -= 3;
+			}
+		}
+		
+		ctx.fillStyle = "red";
+		ctx.fillRect(tmpWipeout.x, tmpWipeout.y, 300, 5);
+		
+				if(playAnimation){
+			setTimeout(startWipeout, 33);
+		}
+	
+	}
+	}
 		
 	/*****************************/
 	/*****************************/
