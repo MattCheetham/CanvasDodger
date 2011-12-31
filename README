@@ -9,7 +9,9 @@ KEYS:
 A or Left arrow - Left
 D or Right arrow - Right
 
-//NOT YET IMPLEMENTED\\
 W or Up arrow - Toggle up through power ups
 S or Down arrow - Toggle down through power ups
 Space bar - Use power up
+
+NOTE:
+Power ups do not currently produce any effects. Due in next commit.

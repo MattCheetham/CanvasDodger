@@ -10,6 +10,10 @@ $(document).ready(function() {
 	var enemySpeed = 1000;
 	var level = 1;
 	var velocity = 3;
+	var powerup1 = false;
+	var powerup2 = false;
+	var powerup3 = false;
+	var selectedPowerup = 1;
 	
 	/*
 	* Define The Canvas Element
@@ -31,9 +35,9 @@ $(document).ready(function() {
 	
 	/*
 	* Define keys and the default direction
-	* W&D
+	* A&D&W&S and Space bar
 	*/
-    var keys = [ [ 37, 65 ], [ 39, 68 ] ];
+    var keys = [ [ 37, 65 ], [ 39, 68 ], [ 87, 38 ], [ 40, 83 ], [ 32 ] ];
     
     /*
     * Check if we have pressed a key or released it
@@ -51,6 +55,30 @@ $(document).ready(function() {
 	}else if( evt.which == keys[1][0] || evt.which == keys[1][1] ) {
 		direction = 'right';
 		return direction;
+	}else if( evt.which == keys[2][0] || evt.which == keys[2][1] ) {
+		if(selectedPowerup == 1){
+			}else{
+		selectedPowerup -= 1;
+			}
+		return selectedPowerup;
+	}else if( evt.which == keys[3][0] || evt.which == keys[3][1] ) {
+		if(selectedPowerup == 3){
+			}else{
+		selectedPowerup += 1;
+			}
+		return selectedPowerup;
+	}else if( evt.which == keys[4]) {
+		if(powerup1 == true && selectedPowerup == 1)
+		{
+		powerup1 = false;
+		} else if(powerup2 == true && selectedPowerup == 2)
+		{
+		powerup2 = false;
+		} else if(powerup3 == true && selectedPowerup == 3)
+		{
+		powerup3 = false;
+		}
+
 		}
 	}
 	
@@ -140,7 +168,6 @@ $(document).ready(function() {
 	* Animate the player movement
 	*/
 	function animate() {
-	
 		var playerLength = player.length;
 		for (var i = 0; i < playerLength; i++){
 			var tmpPlayer = player[i];
@@ -220,6 +247,16 @@ $(document).ready(function() {
 			!(player[0].x+30 < tmpPowerups.x) &&
 			!(tmpPowerups.y+30 < player[0].y) &&
 			!(player[0].y+30 < tmpPowerups.y)) { 
+			
+			var newPower = Math.round(Math.random()*(3-1)+1);
+			
+			if(newPower == 1){
+				powerup1 = true;
+			}else if(newPower == 2){
+				powerup2 = true;
+			}else if(newPower == 3){
+				powerup3 = true;
+			}
 			
 		for(var i=0; i<powerups.length; i++) {
 			if (powerups[i] == tmpPowerups){
@@ -333,6 +370,82 @@ $(document).ready(function() {
 		}
 		
 	/*
+	Colour in options we have selected
+	*/
+	function colourOption(){
+	ctx.beginPath();
+		ctx.moveTo(305, 40);
+		ctx.lineTo(445, 40);
+		ctx.lineTo(445, 65);
+		ctx.lineTo(305, 65);
+		ctx.lineTo(305, 40);
+		ctx.closePath();
+		if(powerup1 == true && selectedPowerup == 1){
+			ctx.fillStyle = "green";
+			ctx.fill();
+			ctx.fillStyle = "black";
+		} else if(powerup1 == true && selectedPowerup !== 1) {
+			ctx.fill();
+		} else {
+			ctx.fillStyle = "white";
+			ctx.fill();
+			ctx.fillStyle = "black";
+		}
+		ctx.font = '20px san-serif';
+		ctx.fillStyle = "white";
+		ctx.fillText("Bullet", 350, 65);
+		ctx.fillStyle = "black";
+		ctx.beginPath();
+		ctx.moveTo(305, 70);
+		ctx.lineTo(445, 70);
+		ctx.lineTo(445, 95);
+		ctx.lineTo(305, 95);
+		ctx.lineTo(305, 70);
+		ctx.closePath();
+		if(powerup2 == true && selectedPowerup == 2){
+			ctx.fillStyle = "green";
+			ctx.fill();
+			ctx.fillStyle = "black";
+		} else if(powerup2 == true && selectedPowerup !== 2) {
+			ctx.fill();
+		} else {
+			ctx.fillStyle = "white";
+			ctx.fill();
+			ctx.fillStyle = "black";
+		}
+		ctx.font = '20px san-serif';
+		ctx.fillStyle = "white";
+		ctx.fillText("Shield", 348, 95);
+		ctx.fillStyle = "black";
+		ctx.beginPath();
+		ctx.moveTo(305, 100);
+		ctx.lineTo(445, 100);
+		ctx.lineTo(445, 125);
+		ctx.lineTo(305, 125);
+		ctx.lineTo(305, 100);
+		ctx.closePath();
+		if(powerup3 == true && selectedPowerup == 3){
+			ctx.fillStyle = "green";
+			ctx.fill();
+			ctx.fillStyle = "black";
+		} else if(powerup3 == true && selectedPowerup !== 3){
+			ctx.fill();
+		} else {
+			ctx.fillStyle = "white";
+			ctx.fill();
+			ctx.fillStyle = "black";
+		}
+		ctx.font = '20px san-serif';
+		ctx.fillStyle = "white";
+		ctx.fillText("Wipeout", 340, 123);
+		ctx.fillStyle = "black";
+	
+		if(playAnimation == true && pauseScore == false){
+			setTimeout(colourOption, 33);
+		}
+	}
+	
+	/*
 	* Show the score & Level
 	*/
 	function showScore(){
@@ -364,7 +477,7 @@ $(document).ready(function() {
 			}
 		}
 		
-		if(playAnimation == true && pauseScore == false){
+		if(playAnimation){
 			setTimeout(showScore, 33);
 		}
 	}
@@ -378,4 +491,5 @@ $(document).ready(function() {
 	drawBoard();
 	showScore();
 	powerSpawn();
+	colourOption();
 });
