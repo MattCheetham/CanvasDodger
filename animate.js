@@ -11,7 +11,7 @@ $(document).ready(function() {
 	var level = 1;
 	var velocity = 3;
 	var powerup1 = false;
-	var powerup2 = true;
+	var powerup2 = false;
 	var powerup3 = false;
 	var selectedPowerup = 1;
 	var P1Anim = false;
