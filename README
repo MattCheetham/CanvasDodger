@@ -13,5 +13,14 @@ W or Up arrow - Toggle up through power ups
 S or Down arrow - Toggle down through power ups
 Space bar - Use power up
 
-NOTE:
-Power ups do not currently produce any effects. Due in next commit.
+Powerups:
+
+BULLET:
+Fires a single bullet to kill the enemy
+
+SHIELD:
+Gives you a shield that can take 3 hits. 
+Note: Powering up a second shield whilst having an active shield will simply add 3 more lives to the shield
+
+WIPEOUT:
+Send a shockwave up the screen to destroy all enemies in sight

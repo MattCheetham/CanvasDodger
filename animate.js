@@ -10,12 +10,14 @@ $(document).ready(function() {
 	var enemySpeed = 1000;
 	var level = 1;
 	var velocity = 3;
-	var powerup1 = true;
+	var powerup1 = false;
 	var powerup2 = true;
-	var powerup3 = true;
+	var powerup3 = false;
 	var selectedPowerup = 1;
 	var P1Anim = false;
+	var P2Anim = false;
 	var P3Anim = false;
+	var shieldLives = 0;
 	
 	/*
 	* Define The Canvas Element
@@ -52,7 +54,14 @@ $(document).ready(function() {
 		
 		var bullet = new Array();
 		
-	
+		var Shield = function(x, y, radius) {
+		this.x = x;
+		this.y = y;
+		this.radius = radius;
+	};
+		
+		var shield = new Array();
+		
 	/*
 	* Define keys and the default direction
 	* A&D&W&S and Space bar
@@ -66,7 +75,7 @@ $(document).ready(function() {
 	document.onkeyup = keyRelease;
 	
 	/*
-	* Check which key is pressed and define the player direction
+	* Check which key is pressed and define the player direction as well as monitoring for firing power ups
 	*/
 	function keyPress(evt){
 		if( evt.which == keys[0][0] || evt.which == keys[0][1] ) {
@@ -99,6 +108,11 @@ $(document).ready(function() {
 		} else if(powerup2 == true && selectedPowerup == 2)
 		{
 		powerup2 = false;
+		shieldLives += 3;
+		if(P2Anim == false){
+		P2Anim = true;
+		shield.push(new Shield(player[0].x+15, player[0].y+15, 30))
+		}
 		} else if(powerup3 == true && selectedPowerup == 3)
 		{
 		powerup3 = false;
@@ -193,19 +207,32 @@ $(document).ready(function() {
 	}
 	
 	
-	
-	/*
-	* Animate the player movement
-	*/
-	function animate() {
+		function animate() {
+		console.log(shieldLives);
+		ctx.clearRect(0, 0, 300, 500)
+		/*
+		* Animate the Shield
+		*/
+		var shieldLength = shield.length;
+		for (var i = 0; i < shieldLength; i++){
+			var tmpShield = shield[i];
+				ctx.fillStyle = "aqua";
+				ctx.beginPath();
+				ctx.arc(tmpShield.x, tmpShield.y, 30, 0, Math.PI*2, false);
+				ctx.closePath(); 
+				ctx.fill();
+			}
+		/*
+		* Animate the player movement
+		*/
+
+
 		var playerLength = player.length;
 		for (var i = 0; i < playerLength; i++){
 			var tmpPlayer = player[i];
-				/*ctx.clearRect(0, 0, 300, 500);*/
 				ctx.fillStyle = "red";
 				ctx.fillRect(tmpPlayer.x, tmpPlayer.y, 30, 30);
-		};
-		
+		}
 		/*
 		* Animate the enemies
 		*/
@@ -213,7 +240,6 @@ $(document).ready(function() {
 		var enemiesLength = enemies.length;
 		for (var i = 0; i < enemiesLength; i++) {
 			var tmpEnemies = enemies[i];
-			ctx.clearRect(tmpEnemies.x, tmpEnemies.y, 30, 30);
 				if( level == 1){
 					tmpEnemies.y += 3;
 				} else if( level == 2){
@@ -233,32 +259,54 @@ $(document).ready(function() {
 			!(tmpEnemies.y+30 < player[0].y) &&
 			!(player[0].y+30 < tmpEnemies.y)) { 
 			playAnimation = false;
-		};
+		}
 		
 		if (P3Anim == true && wipeout.length > 0){
 		if (tmpEnemies.y+30 > wipeout[0].y-5){ 
 			
 			for(var i=0; i<enemies.length; i++) {
 			if (enemies[i] == tmpEnemies){
-				ctx.clearRect(tmpEnemies.x, tmpEnemies.y, 30, 30)
 				enemies.splice(enemies.indexOf(enemies[i]), 1);
 					}
 				}
-		};
+		}
 		}
 		
 			if (P1Anim == true && bullet.length > 0){
-		if (tmpEnemies.y+30 > bullet[0].y-5){ 
+		if (!(tmpEnemies.x+30 < bullet[0].x) &&
+			!(bullet[0].x+30 < tmpEnemies.x) &&
+			!(tmpEnemies.y+30 < bullet[0].y) &&
+			!(bullet[0].y+30 < tmpEnemies.y)) { 
 			
 			for(var i=0; i<enemies.length; i++) {
 			if (enemies[i] == tmpEnemies){
-				ctx.clearRect(tmpEnemies.x, tmpEnemies.y, 30, 30)
 				enemies.splice(enemies.indexOf(enemies[i]), 1);
-				ctx.clearRect(bullet[0].x, bullet[0].y, 3, 5);
 				bullet.splice(bullet.indexOf(bullet[i]), 1);
 					}
 				}
-		};
+		}
+		}
+		
+		if (P2Anim == true && shield.length > 0){
+		if (!(tmpEnemies.x+30 < shield[0].x-30) &&
+			!(shield[0].x+30 < tmpEnemies.x) &&
+			!(tmpEnemies.y+30 < shield[0].y-30) &&
+			!(shield[0].y+30 < tmpEnemies.y)) { 
+			
+			
+			for(var i=0; i<enemies.length; i++) {
+			if (enemies[i] == tmpEnemies){
+			enemies.splice(enemies.indexOf(enemies[i]), 1);
+			}
+			}
+			
+			
+			shieldLives -= 1;
+			if(shieldLives == 0){
+			P2Anim = false;
+			shield.splice(shield.indexOf(shield[i]), 1);
+			}
+		}
 		}
 		
 		
@@ -287,8 +335,7 @@ $(document).ready(function() {
 		*/
 		var powerupsLength = powerups.length;
 		for (var i = 0; i < powerupsLength; i++) {
-			var tmpPowerups = powerups[i];
-			ctx.clearRect(tmpPowerups.x, tmpPowerups.y, 30, 30);
+			var tmpPowerups = powerups[i];;
 				if( level == 1){
 					tmpPowerups.y += 3;
 				} else if( level == 2){
@@ -307,7 +354,6 @@ $(document).ready(function() {
 			!(tmpPowerups.y+30 < player[0].y) &&
 			!(player[0].y+30 < tmpPowerups.y)) { 
 			
-			ctx.clearRect(tmpPowerups.x, tmpPowerups.y, 30, 30);
 			var newPower = Math.round(Math.random()*(3-1)+1);
 			
 			if(newPower == 1){
@@ -327,26 +373,47 @@ $(document).ready(function() {
 		}
 		
 		/*
-		* Move the player
+		* Move the player and the shield if we have one!
 		*/
 		if( direction == 'left'){
-			ctx.clearRect(tmpPlayer.x, tmpPlayer.y, 30, 30);
+			if(P2Anim == false){
 				if(player[0].x-8 < 0){
 					player[0].x = 0;
 				} else {
 					player[0].x -= 8;
 				}
-			ctx.fillStyle = "red";
-			ctx.fillRect(tmpPlayer.x, tmpPlayer.y, 30, 30);
+			}else{
+				if(player[0].x-8 < 15){
+					player[0].x = 15;
+				} else {
+					player[0].x -= 8;
+				}
+				if(shield[0].x-8 < 30){
+					shield[0].x = 30;
+				} else {
+					shield[0].x -= 8;
+				}
+			}
 		} else if( direction == 'right'){
-			ctx.clearRect(tmpPlayer.x, tmpPlayer.y, 30, 30);
+			if(P2Anim == false){
 				if(player[0].x+8 > 270){
 					player[0].x = 270;
 				} else {
 					player[0].x += 8;
 				}
-			ctx.fillStyle = "red";
-			ctx.fillRect(tmpPlayer.x, tmpPlayer.y, 30, 30);
+			}else{
+				if(player[0].x+8 > 255){
+					player[0].x = 255;
+				} else {
+					player[0].x += 8;
+				}
+				if(shield[0].x+8 > 270){
+					shield[0].x = 270;
+				} else {
+					shield[0].x += 8;
+				}
+			}
+
 		}
 	
 		if(playAnimation){
@@ -406,7 +473,6 @@ $(document).ready(function() {
 				P3Anim = false;
 			
 			} else {
-			ctx.clearRect(tmpWipeout.x, tmpWipeout.y, 300, 5)
 					tmpWipeout.y -= 3;
 			}
 		}
@@ -434,7 +500,6 @@ $(document).ready(function() {
 			P1Anim = false;
 			
 			} else {
-			ctx.clearRect(tmpBullet.x, tmpBullet.y, 3, 5)
 				tmpBullet.y -= 5;
 				}
 				
